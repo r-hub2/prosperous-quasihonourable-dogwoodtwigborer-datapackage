@@ -331,6 +331,9 @@ expect_equal(res, expected)
 
 res <- dp_get_data(datapackage, "test")
 expect_equal(res$col1, data$col1, attributes = FALSE)
+if (!isTRUE(all(res$col1 == data$col1))) {
+  stop(paste0("'", res$col1, "'", collapse=","))
+}
 expect_equal(res$col2, data$col2, attributes = FALSE)
 
 
