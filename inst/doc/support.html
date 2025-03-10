@@ -6,12 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Jan van der Laan" />
   <title>Overview of support for the Datapackage Specification v2</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
   <style type="text/css">
 
 html {
@@ -216,14 +226,18 @@ padding: 0.2rem;
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">Overview of support for the Datapackage Specification v2</h1>
+<h1 class="title">Overview of support for the Datapackage Specification
+v2</h1>
 <p class="author">Jan van der Laan</p>
 </header>
 <!--
 %\VignetteEngine{simplermarkdown::mdweave_to_html}
 %\VignetteIndexEntry{Overview of support for the Data Package specification v2}
 -->
-<p>Note that any property can always be obtained and set using <code>dpproperty()</code> and <code>dpproperty&lt;-()</code> respectively. Therefore, when specific support for a property is missing from the table below, this poperty can still be obtained and set.</p>
+<p>Note that any property can always be obtained and set using
+<code>dpproperty()</code> and <code>dpproperty&lt;-()</code>
+respectively. Therefore, when specific support for a property is missing
+from the table below, this poperty can still be obtained and set.</p>
 <h2 id="data-package">Data Package</h2>
 <table>
 <thead>
@@ -370,7 +384,8 @@ Setting
 <code>dp_contributors()</code>
 </td>
 <td class="complete">
-<code>dp_contributors&lt;-()</code>, <code>dp_add_contributor()</code>, <code>dp_new_contributor()</code>
+<code>dp_contributors&lt;-()</code>, <code>dp_add_contributor()</code>,
+<code>dp_new_contributor()</code>
 </td>
 </tr>
 <tr>
@@ -427,10 +442,12 @@ Setting
 <code>data</code>
 </td>
 <td class="complete">
-<code>dp_get_data()</code> returns data either from ‘data’ property or by reading from the ‘path’.
+<code>dp_get_data()</code> returns data either from ‘data’ property or
+by reading from the ‘path’.
 </td>
 <td class="partial">
-It is possible to write data to file using <code>dp_write_data()</code>, but not to the ‘data’ property inside the <code>datapackage.json</code>
+It is possible to write data to file using <code>dp_write_data()</code>,
+but not to the ‘data’ property inside the <code>datapackage.json</code>
 </td>
 </tr>
 <tr>
@@ -478,7 +495,9 @@ It is possible to write data to file using <code>dp_write_data()</code>, but not
 <code>format</code>
 </td>
 <td class="complete">
-<code>dp_format()</code>, <code>dp_get_data()</code> will use the ‘format’ as the primary determinant for the reader to use to read the data.
+<code>dp_format()</code>, <code>dp_get_data()</code> will use the
+‘format’ as the primary determinant for the reader to use to read the
+data.
 </td>
 <td class="complete">
 <code>dp_format&lt;-()</code>
@@ -489,10 +508,13 @@ It is possible to write data to file using <code>dp_write_data()</code>, but not
 <code>mediatype</code>
 </td>
 <td class="complete">
-<code>dp_mediatype()</code>, when ‘format’ is missing ‘mediatype’ will be used to determine which reader to use for reading the data by <code>dp_get_data()</code>
+<code>dp_mediatype()</code>, when ‘format’ is missing ‘mediatype’ will
+be used to determine which reader to use for reading the data by
+<code>dp_get_data()</code>
 </td>
 <td class="complete">
-<code>dp_mediatype&lt;-()</code>, <code>dp_generate_dataresource()</code>
+<code>dp_mediatype&lt;-()</code>,
+<code>dp_generate_dataresource()</code>
 </td>
 </tr>
 <tr>
@@ -548,7 +570,10 @@ It is possible to write data to file using <code>dp_write_data()</code>, but not
 </tr>
 </tbody>
 </table>
-<p><sup>a</sup> The number of bytes and the hash can be set and get. There is no functionality to check is the file indeed has the specified number of bytes or hash and/or to automatically calculate this from the given file(s).</p>
+<p><sup>a</sup> The number of bytes and the hash can be set and get.
+There is no functionality to check is the file indeed has the specified
+number of bytes or hash and/or to automatically calculate this from the
+given file(s).</p>
 <h2 id="tabular-data-resource">Tabular Data Resource</h2>
 <table>
 <thead>
@@ -570,10 +595,14 @@ Setting
 <code>dialect</code>
 </td>
 <td class="partial">
-See ‘Table Dialect’. There is no function to specifically get the ‘dialect’ information. The data resource is passed to the reader functions that will access this information.
+See ‘Table Dialect’. There is no function to specifically get the
+‘dialect’ information. The data resource is passed to the reader
+functions that will access this information.
 </td>
 <td class="partial">
-See ‘Table Dialect’. The writer functions will use this information when writing. There is no specific function to change this information. By default the, safe, default values will be used.
+See ‘Table Dialect’. The writer functions will use this information when
+writing. There is no specific function to change this information. By
+default the, safe, default values will be used.
 </td>
 </tr>
 <tr>
@@ -584,13 +613,17 @@ See ‘Table Dialect’. The writer functions will use this information when wri
 <code>dp_schema()</code>, also see ‘Table Schema’
 </td>
 <td class="partial">
-<code>dp_generate_dataresource()</code> will generate appropiate schema for a given data set.
+<code>dp_generate_dataresource()</code> will generate appropiate schema
+for a given data set.
 </td>
 </tr>
 </tbody>
 </table>
 <h2 id="table-dialect">Table Dialect</h2>
-<p>As mentioned above, the ‘dialect’ property cannot be directly set. The table below indicates what properties are recognised when reading and writing data. The items are marked as support or not or irrelevant based on the support by the CSV reader and writer.</p>
+<p>As mentioned above, the ‘dialect’ property cannot be directly set.
+The table below indicates what properties are recognised when reading
+and writing data. The items are marked as support or not or irrelevant
+based on the support by the CSV reader and writer.</p>
 <table>
 <thead>
 <tr>
@@ -795,8 +828,9 @@ CSV
 </tr>
 </tbody>
 </table>
-<p><sup>a</sup> Only <code>\n</code>/<code>\r</code> or <code>\r\n</code> is accepted.</p>
-<p><sup>b</sup> Only ‘<code>&quot;</code>’ is accepted.</p>
+<p><sup>a</sup> Only <code>\n</code>/<code>\r</code> or
+<code>\r\n</code> is accepted.</p>
+<p><sup>b</sup> Only ‘<code>“</code>’ is accepted.</p>
 <p><sup>c</sup> Only ‘<code>true</code>’ is accepted.</p>
 <h2 id="table-schema">Table Schema</h2>
 <table>
@@ -964,7 +998,8 @@ Used by <code>dp_get_data()</code>.
 <code>constraints</code>
 </td>
 <td class="partial">
-Used by <code>dp_check_field()</code> and <code>dp_check_dataresource()</code>; see ‘Field Constraints’.
+Used by <code>dp_check_field()</code> and
+<code>dp_check_dataresource()</code>; see ‘Field Constraints’.
 </td>
 <td class="incomplete">
 </td>
@@ -977,7 +1012,8 @@ Used by <code>dp_check_field()</code> and <code>dp_check_dataresource()</code>; 
 Used by <code>dp_categorieslist()</code> and <code>dp_get_data()</code>.
 </td>
 <td class="partial">
-Used by <code>dp_write_data()</code> and <code>dp_generate_dataresource()</code>.
+Used by <code>dp_write_data()</code> and
+<code>dp_generate_dataresource()</code>.
 </td>
 </tr>
 <tr>
@@ -1011,8 +1047,12 @@ Used by <code>dp_get_data()</code>.
 </tbody>
 </table>
 <h2 id="field-types">Field Types</h2>
-<p>As mentioned above, the field descriptors cannot be directly modified or read from. The table below indicates what properties are recognised when reading and writing data. The items are marked as support or not or irrelevant based on the support by the CSV reader and writer.</p>
-<p>When a type is not supported the data will be read as a character string.</p>
+<p>As mentioned above, the field descriptors cannot be directly modified
+or read from. The table below indicates what properties are recognised
+when reading and writing data. The items are marked as support or not or
+irrelevant based on the support by the CSV reader and writer.</p>
+<p>When a type is not supported the data will be read as a character
+string.</p>
 <table>
 <thead>
 <tr>
@@ -1370,7 +1410,11 @@ CSV
 </tbody>
 </table>
 <h2 id="field-constraints">Field Constraints</h2>
-<p>The functions <code>dp_check_dataresource()</code> and <code>dp_check_field()</code> checks if a given <code>data.frame</code> or vector is valid given the Data Resource or Field Descriptor. By default these will also check any constraints of fields. The default CSV and fixed width readers will not run these checks.</p>
+<p>The functions <code>dp_check_dataresource()</code> and
+<code>dp_check_field()</code> checks if a given <code>data.frame</code>
+or vector is valid given the Data Resource or Field Descriptor. By
+default these will also check any constraints of fields. The default CSV
+and fixed width readers will not run these checks.</p>
 <table>
 <thead>
 <tr>
@@ -1394,7 +1438,8 @@ Setting
 <code>required</code>
 </td>
 <td class="complete">
-<code>dp_check_field()</code>, <code>dp_check_dataresource(…, constraints = TRUE)</code>
+<code>dp_check_field()</code>, <code>dp_check_dataresource(…,
+constraints = TRUE)</code>
 </td>
 <td class="incomplete">
 </td>
@@ -1406,7 +1451,8 @@ Setting
 <code>unique</code>
 </td>
 <td class="complete">
-<code>dp_check_field()</code>, <code>dp_check_dataresource(…, constraints = TRUE)</code>
+<code>dp_check_field()</code>, <code>dp_check_dataresource(…,
+constraints = TRUE)</code>
 </td>
 <td class="incomplete">
 </td>
@@ -1440,7 +1486,8 @@ Setting
 <code>minimum</code>
 </td>
 <td class="complete">
-<code>dp_check_field()</code>, <code>dp_check_dataresource(…, constraints = TRUE)</code>
+<code>dp_check_field()</code>, <code>dp_check_dataresource(…,
+constraints = TRUE)</code>
 </td>
 <td class="incomplete">
 </td>
@@ -1452,7 +1499,8 @@ Setting
 <code>maximum</code>
 </td>
 <td class="complete">
-<code>dp_check_field()</code>, <code>dp_check_dataresource(…, constraints = TRUE)</code>
+<code>dp_check_field()</code>, <code>dp_check_dataresource(…,
+constraints = TRUE)</code>
 </td>
 <td class="incomplete">
 </td>
@@ -1464,7 +1512,8 @@ Setting
 <code>exclusiveMinimum</code>
 </td>
 <td class="complete">
-<code>dp_check_field()</code>, <code>dp_check_dataresource(…, constraints = TRUE)</code>
+<code>dp_check_field()</code>, <code>dp_check_dataresource(…,
+constraints = TRUE)</code>
 </td>
 <td class="incomplete">
 </td>
@@ -1476,7 +1525,8 @@ Setting
 <code>exclusiveMaximum</code>
 </td>
 <td class="complete">
-<code>dp_check_field()</code>, <code>dp_check_dataresource(…, constraints = TRUE)</code>
+<code>dp_check_field()</code>, <code>dp_check_dataresource(…,
+constraints = TRUE)</code>
 </td>
 <td class="incomplete">
 </td>
@@ -1510,7 +1560,8 @@ Setting
 <code>enum</code>
 </td>
 <td class="complete">
-<code>dp_check_field()</code>, <code>dp_check_dataresource(…, constraints = TRUE)</code>
+<code>dp_check_field()</code>, <code>dp_check_dataresource(…,
+constraints = TRUE)</code>
 </td>
 <td class="incomplete">
 </td>
