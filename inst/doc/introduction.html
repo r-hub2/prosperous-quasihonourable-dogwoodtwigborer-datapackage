@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Jan van der Laan" />
+  <title>Introduction to working with Data Packages</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 46em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+th, td {
+vertical-align: top;
+}
+.incomplete {
+background: #EFBDBE;
+font-size: 80%;
+}
+.complete {
+background: #BEEFBD;
+font-size: 80%;
+}
+.partial {
+background: #EFEEBD;
+font-size: 80%;
+}
+.irrelevant {
+background: #EEEEEE;
+font-size: 80%;
+}
+tr.sub td:first-of-type {
+padding-left: 2em;
+}
+p {
+text-align: justify;
+}
+header p {
+text-align: center;
+}
+pre {
+background: #eeeeee;
+padding: 0.5rem;
+}
+pre code {
+color: black;
+background: inherit;
+padding: 0;
+}
+code {
+color: black;
+background: #eeeeee;
+padding: 0.2rem;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Introduction to working with Data Packages</h1>
+<p class="author">Jan van der Laan</p>
+</header>
+<!--
+%\VignetteEngine{simplermarkdown::mdweave_to_html}
+%\VignetteIndexEntry{Introduction to datapackage}
+-->
+<p>A <a href="https://datapackage.org">Data Package</a> is collection of files and consists of both data, which can be any type of information such as images and CSV files, and meta data. These files are usually stored in one directory (possibly with sub directories) although links to external data are possible. Meta data is data about data and consists of the information needed by software programmes to use the data and information needed by users of the data such as descriptions, names of authors, licences etc. The meta data is stored in a file in the directory that is usually called <code>datapackage.json</code>. The information in this file is what below will be called the Data Package. As mentioned, it contains both information on the data package itself (title, description) and information on a number of Data Resources. The Data Resources describe the data files in the data package and also contains information like a title, description, but also information needed by software to use the data such as the path to the data (location of the data), and technical information such as how the data is stored. This information makes it easier to use the data. Below we will show how we can use the information in a Data Package to easily read in the data and work with the data and we will show how we can create a Data Package for our own data.</p>
+<h2 id="overview-of-terminology">Overview of terminology</h2>
+<p>Below an overview of some of the terminology associated with Data Packages.</p>
+<p><strong><a href="https://datapackage.org/standard/data-package/">Data Package</a></strong></p>
+<ul>
+<li>Contains one or more Data Resources.</li>
+<li>Has a number of properties like <code>title</code>, <code>name</code> and <code>description</code>.</li>
+</ul>
+<p><strong><a href="https://datapackage.org/standard/data-resource/">Data Resource</a></strong></p>
+<ul>
+<li>Contains data either as inline data in a <code>data</code> property or external data pointed to by a <code>path</code> property.</li>
+<li>Has a number of properties, like <code>title,</code>name<code>,</code>encoding`, …</li>
+</ul>
+<p><strong><a href="https://datapackage.org/standard/data-resource/#tabular">Tabular Data Resource</a></strong></p>
+<ul>
+<li>Is a Data Resource with an additional set of properties and constraints.</li>
+<li>Has a Table Schema.</li>
+</ul>
+<p><strong><a href="https://datapackage.org/standard/table-schema/">Table Schema</a></strong></p>
+<ul>
+<li>Describes a tabular data set (a data set with rows an columns; as usually stored in a <code>data.frame</code> in R).</li>
+<li>Has one or more Field Descriptors.</li>
+</ul>
+<p><strong><a href="https://datapackage.org/standard/table-schema/#field">Field Descriptor</a></strong></p>
+<ul>
+<li>Describes a Field (a column) in a tabular data set.</li>
+<li>Has number of properties like, <code>name</code> and <code>type</code>.</li>
+</ul>
+<h2 id="tldr">tl;dr</h2>
+<p><code>open_datapackage()</code> reads the meta data from the <code>datapackage.json</code>. From the output below you can see that the data package has three data resources.</p>
+<div class="sourceCode" id="tldropen"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="tldropen-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(datapackage, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="tldropen-2" title="2"><span class="op">&gt;</span><span class="st"> </span>dir &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;examples/employ&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;datapackage&quot;</span>)</a>
+<a class="sourceLine" id="tldropen-3" title="3"><span class="op">&gt;</span><span class="st"> </span>dp &lt;-<span class="st"> </span><span class="kw">open_datapackage</span>(dir)</a>
+<a class="sourceLine" id="tldropen-4" title="4"><span class="op">&gt;</span><span class="st"> </span>dp</a>
+<a class="sourceLine" id="tldropen-5" title="5">[example] Example data set <span class="cf">for</span> the datapackage package</a>
+<a class="sourceLine" id="tldropen-6" title="6"></a>
+<a class="sourceLine" id="tldropen-7" title="7">This is an example data set to show how the datapackage package can be used to import data into R.</a>
+<a class="sourceLine" id="tldropen-8" title="8">...</a>
+<a class="sourceLine" id="tldropen-9" title="9"></a>
+<a class="sourceLine" id="tldropen-10" title="10">Location<span class="op">:</span><span class="st"> </span><span class="er">&lt;/</span>tmp<span class="op">/</span>Rtmp8Y7fg1<span class="op">/</span>Rinstbfa223711ac<span class="op">/</span>datapackage<span class="op">/</span>examples<span class="op">/</span>employ<span class="op">&gt;</span></a>
+<a class="sourceLine" id="tldropen-11" title="11">Resources<span class="op">:</span></a>
+<a class="sourceLine" id="tldropen-12" title="12">[employment] Employment status</a>
+<a class="sourceLine" id="tldropen-13" title="13">[codelist<span class="op">-</span>gender] Code list <span class="cf">for</span> gender of person</a>
+<a class="sourceLine" id="tldropen-14" title="14">[codelist<span class="op">-</span>employ] Code list <span class="cf">for</span> employment status</a></code></pre></div>
+<p>To read the data beloning to one of the data resources:</p>
+<div class="sourceCode" id="tldrgetdata"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="tldrgetdata-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span>dp <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">dp_resource</span>(<span class="st">&quot;employment&quot;</span>) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">dp_get_data</span>()</a>
+<a class="sourceLine" id="tldrgetdata-2" title="2"><span class="op">&gt;</span><span class="st"> </span>dta</a>
+<a class="sourceLine" id="tldrgetdata-3" title="3">          id        dob gender employ  income haspartner</a>
+<a class="sourceLine" id="tldrgetdata-4" title="4"><span class="dv">1</span>  <span class="dv">368509515</span> <span class="dv">1993-06-14</span>      M      E <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-5" title="5"><span class="dv">2</span>  <span class="dv">187844355</span> <span class="dv">1961-10-08</span>      X      U      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-6" title="6"><span class="dv">3</span>  <span class="dv">273040044</span> <span class="dv">1982-06-17</span>      F      E  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-7" title="7"><span class="dv">4</span>  <span class="dv">963831798</span> <span class="dv">1965-02-15</span>      M      E  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-8" title="8"><span class="dv">5</span>  <span class="dv">854856378</span> <span class="dv">1990-01-30</span>      F      E  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrgetdata-9" title="9"><span class="dv">6</span>   <span class="dv">20072760</span> <span class="dv">1961-08-18</span>      F      E <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-10" title="10"><span class="dv">7</span>  <span class="dv">429782078</span> <span class="dv">2019-09-23</span>      M      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-11" title="11"><span class="dv">8</span>  <span class="dv">711292034</span> <span class="dv">1994-02-16</span>      M      E  <span class="fl">455.98</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-12" title="12"><span class="dv">9</span>  <span class="dv">949458305</span> <span class="dv">2005-06-16</span>      F      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-13" title="13"><span class="dv">10</span> <span class="dv">911459071</span> <span class="dv">2007-02-27</span>      F      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-14" title="14"><span class="dv">11</span> <span class="dv">921370403</span> <span class="dv">1981-09-14</span>      F      E <span class="fl">1461.36</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-15" title="15"><span class="dv">12</span>  <span class="dv">26901869</span> <span class="dv">1981-03-08</span>      F      E <span class="fl">1153.02</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrgetdata-16" title="16"><span class="dv">13</span> <span class="dv">640668848</span> <span class="dv">1993-08-30</span>      M      E  <span class="fl">708.98</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrgetdata-17" title="17"><span class="dv">14</span> <span class="dv">996464509</span> <span class="dv">1960-12-10</span>      M      E <span class="fl">1088.99</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-18" title="18"><span class="dv">15</span>  <span class="dv">58820512</span> <span class="dv">1962-10-13</span>      M      E <span class="fl">2243.10</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-19" title="19"><span class="dv">16</span> <span class="dv">288242988</span> <span class="dv">2013-06-11</span>      M      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-20" title="20"><span class="dv">17</span> <span class="dv">549758863</span> <span class="dv">1990-06-09</span>      M      E  <span class="fl">719.69</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrgetdata-21" title="21"><span class="dv">18</span> <span class="dv">998045846</span> <span class="dv">1973-01-25</span>      F      E <span class="fl">1312.45</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-22" title="22"><span class="dv">19</span> <span class="dv">902078272</span> <span class="dv">1962-05-29</span>      F      E  <span class="fl">618.27</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrgetdata-23" title="23"><span class="dv">20</span> <span class="dv">594477489</span> <span class="dv">1952-08-31</span>      <span class="op">-</span><span class="st">      </span>N      <span class="ot">NA</span>       <span class="ot">TRUE</span></a></code></pre></div>
+<p>When the name of the data resource is known, the data can also be read directly from the data package without explicitly opening the Data Package:</p>
+<div class="sourceCode" id="tldrload"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="tldrload-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">dp_load_from_datapackage</span>(dir, <span class="st">&quot;employment&quot;</span>)</a>
+<a class="sourceLine" id="tldrload-2" title="2"><span class="op">&gt;</span><span class="st"> </span>dta</a>
+<a class="sourceLine" id="tldrload-3" title="3">          id        dob gender employ  income haspartner</a>
+<a class="sourceLine" id="tldrload-4" title="4"><span class="dv">1</span>  <span class="dv">368509515</span> <span class="dv">1993-06-14</span>      M      E <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-5" title="5"><span class="dv">2</span>  <span class="dv">187844355</span> <span class="dv">1961-10-08</span>      X      U      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-6" title="6"><span class="dv">3</span>  <span class="dv">273040044</span> <span class="dv">1982-06-17</span>      F      E  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-7" title="7"><span class="dv">4</span>  <span class="dv">963831798</span> <span class="dv">1965-02-15</span>      M      E  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-8" title="8"><span class="dv">5</span>  <span class="dv">854856378</span> <span class="dv">1990-01-30</span>      F      E  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrload-9" title="9"><span class="dv">6</span>   <span class="dv">20072760</span> <span class="dv">1961-08-18</span>      F      E <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-10" title="10"><span class="dv">7</span>  <span class="dv">429782078</span> <span class="dv">2019-09-23</span>      M      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-11" title="11"><span class="dv">8</span>  <span class="dv">711292034</span> <span class="dv">1994-02-16</span>      M      E  <span class="fl">455.98</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-12" title="12"><span class="dv">9</span>  <span class="dv">949458305</span> <span class="dv">2005-06-16</span>      F      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-13" title="13"><span class="dv">10</span> <span class="dv">911459071</span> <span class="dv">2007-02-27</span>      F      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-14" title="14"><span class="dv">11</span> <span class="dv">921370403</span> <span class="dv">1981-09-14</span>      F      E <span class="fl">1461.36</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-15" title="15"><span class="dv">12</span>  <span class="dv">26901869</span> <span class="dv">1981-03-08</span>      F      E <span class="fl">1153.02</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrload-16" title="16"><span class="dv">13</span> <span class="dv">640668848</span> <span class="dv">1993-08-30</span>      M      E  <span class="fl">708.98</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrload-17" title="17"><span class="dv">14</span> <span class="dv">996464509</span> <span class="dv">1960-12-10</span>      M      E <span class="fl">1088.99</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-18" title="18"><span class="dv">15</span>  <span class="dv">58820512</span> <span class="dv">1962-10-13</span>      M      E <span class="fl">2243.10</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-19" title="19"><span class="dv">16</span> <span class="dv">288242988</span> <span class="dv">2013-06-11</span>      M      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-20" title="20"><span class="dv">17</span> <span class="dv">549758863</span> <span class="dv">1990-06-09</span>      M      E  <span class="fl">719.69</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrload-21" title="21"><span class="dv">18</span> <span class="dv">998045846</span> <span class="dv">1973-01-25</span>      F      E <span class="fl">1312.45</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-22" title="22"><span class="dv">19</span> <span class="dv">902078272</span> <span class="dv">1962-05-29</span>      F      E  <span class="fl">618.27</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrload-23" title="23"><span class="dv">20</span> <span class="dv">594477489</span> <span class="dv">1952-08-31</span>      <span class="op">-</span><span class="st">      </span>N      <span class="ot">NA</span>       <span class="ot">TRUE</span></a></code></pre></div>
+<p>With the <code>convert_categories</code> argument categorical variables can be converted to factor:</p>
+<div class="sourceCode" id="tldrloadfactor"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="tldrloadfactor-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">dp_load_from_datapackage</span>(dir, <span class="st">&quot;employment&quot;</span>, </a>
+<a class="sourceLine" id="tldrloadfactor-2" title="2"><span class="op">+</span><span class="st">   </span><span class="dt">convert_categories =</span> <span class="st">&quot;to_factor&quot;</span>)</a>
+<a class="sourceLine" id="tldrloadfactor-3" title="3"><span class="op">&gt;</span><span class="st"> </span>dta</a>
+<a class="sourceLine" id="tldrloadfactor-4" title="4">          id        dob  gender                 employ  income haspartner</a>
+<a class="sourceLine" id="tldrloadfactor-5" title="5"><span class="dv">1</span>  <span class="dv">368509515</span> <span class="dv">1993-06-14</span>    Male               Employed <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-6" title="6"><span class="dv">2</span>  <span class="dv">187844355</span> <span class="dv">1961-10-08</span>   Other             Unemployed      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-7" title="7"><span class="dv">3</span>  <span class="dv">273040044</span> <span class="dv">1982-06-17</span>  Female               Employed  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-8" title="8"><span class="dv">4</span>  <span class="dv">963831798</span> <span class="dv">1965-02-15</span>    Male               Employed  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-9" title="9"><span class="dv">5</span>  <span class="dv">854856378</span> <span class="dv">1990-01-30</span>  Female               Employed  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrloadfactor-10" title="10"><span class="dv">6</span>   <span class="dv">20072760</span> <span class="dv">1961-08-18</span>  Female               Employed <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-11" title="11"><span class="dv">7</span>  <span class="dv">429782078</span> <span class="dv">2019-09-23</span>    Male Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-12" title="12"><span class="dv">8</span>  <span class="dv">711292034</span> <span class="dv">1994-02-16</span>    Male               Employed  <span class="fl">455.98</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-13" title="13"><span class="dv">9</span>  <span class="dv">949458305</span> <span class="dv">2005-06-16</span>  Female Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-14" title="14"><span class="dv">10</span> <span class="dv">911459071</span> <span class="dv">2007-02-27</span>  Female Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-15" title="15"><span class="dv">11</span> <span class="dv">921370403</span> <span class="dv">1981-09-14</span>  Female               Employed <span class="fl">1461.36</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-16" title="16"><span class="dv">12</span>  <span class="dv">26901869</span> <span class="dv">1981-03-08</span>  Female               Employed <span class="fl">1153.02</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrloadfactor-17" title="17"><span class="dv">13</span> <span class="dv">640668848</span> <span class="dv">1993-08-30</span>    Male               Employed  <span class="fl">708.98</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrloadfactor-18" title="18"><span class="dv">14</span> <span class="dv">996464509</span> <span class="dv">1960-12-10</span>    Male               Employed <span class="fl">1088.99</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-19" title="19"><span class="dv">15</span>  <span class="dv">58820512</span> <span class="dv">1962-10-13</span>    Male               Employed <span class="fl">2243.10</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-20" title="20"><span class="dv">16</span> <span class="dv">288242988</span> <span class="dv">2013-06-11</span>    Male Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-21" title="21"><span class="dv">17</span> <span class="dv">549758863</span> <span class="dv">1990-06-09</span>    Male               Employed  <span class="fl">719.69</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrloadfactor-22" title="22"><span class="dv">18</span> <span class="dv">998045846</span> <span class="dv">1973-01-25</span>  Female               Employed <span class="fl">1312.45</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-23" title="23"><span class="dv">19</span> <span class="dv">902078272</span> <span class="dv">1962-05-29</span>  Female               Employed  <span class="fl">618.27</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadfactor-24" title="24"><span class="dv">20</span> <span class="dv">594477489</span> <span class="dv">1952-08-31</span> Unknown Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>       <span class="ot">TRUE</span></a></code></pre></div>
+<p>Or, they can be converted to the <a href="https://cran.r-project.org/package=codelist"><code>code</code> class from the <code>codelist</code> package</a>. This will preserve both the codes and the labels:</p>
+<div class="sourceCode" id="tldrloadcode"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="tldrloadcode-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(codelist)</a>
+<a class="sourceLine" id="tldrloadcode-2" title="2"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">dp_load_from_datapackage</span>(dir, <span class="st">&quot;employment&quot;</span>, </a>
+<a class="sourceLine" id="tldrloadcode-3" title="3"><span class="op">+</span><span class="st">   </span><span class="dt">convert_categories =</span> <span class="st">&quot;to_code&quot;</span>)</a>
+<a class="sourceLine" id="tldrloadcode-4" title="4"><span class="op">&gt;</span><span class="st"> </span>dta</a>
+<a class="sourceLine" id="tldrloadcode-5" title="5">          id        dob     gender      employ  income haspartner</a>
+<a class="sourceLine" id="tldrloadcode-6" title="6"><span class="dv">1</span>  <span class="dv">368509515</span> <span class="dv">1993-06-14</span> M[Male]    E[Employed] <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-7" title="7"><span class="dv">2</span>  <span class="dv">187844355</span> <span class="dv">1961-10-08</span> X[Other]   U[Unemplo…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-8" title="8"><span class="dv">3</span>  <span class="dv">273040044</span> <span class="dv">1982-06-17</span> F[Female]  E[Employed]  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-9" title="9"><span class="dv">4</span>  <span class="dv">963831798</span> <span class="dv">1965-02-15</span> M[Male]    E[Employed]  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-10" title="10"><span class="dv">5</span>  <span class="dv">854856378</span> <span class="dv">1990-01-30</span> F[Female]  E[Employed]  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrloadcode-11" title="11"><span class="dv">6</span>   <span class="dv">20072760</span> <span class="dv">1961-08-18</span> F[Female]  E[Employed] <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-12" title="12"><span class="dv">7</span>  <span class="dv">429782078</span> <span class="dv">2019-09-23</span> M[Male]    N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-13" title="13"><span class="dv">8</span>  <span class="dv">711292034</span> <span class="dv">1994-02-16</span> M[Male]    E[Employed]  <span class="fl">455.98</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-14" title="14"><span class="dv">9</span>  <span class="dv">949458305</span> <span class="dv">2005-06-16</span> F[Female]  N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-15" title="15"><span class="dv">10</span> <span class="dv">911459071</span> <span class="dv">2007-02-27</span> F[Female]  N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-16" title="16"><span class="dv">11</span> <span class="dv">921370403</span> <span class="dv">1981-09-14</span> F[Female]  E[Employed] <span class="fl">1461.36</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-17" title="17"><span class="dv">12</span>  <span class="dv">26901869</span> <span class="dv">1981-03-08</span> F[Female]  E[Employed] <span class="fl">1153.02</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrloadcode-18" title="18"><span class="dv">13</span> <span class="dv">640668848</span> <span class="dv">1993-08-30</span> M[Male]    E[Employed]  <span class="fl">708.98</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrloadcode-19" title="19"><span class="dv">14</span> <span class="dv">996464509</span> <span class="dv">1960-12-10</span> M[Male]    E[Employed] <span class="fl">1088.99</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-20" title="20"><span class="dv">15</span>  <span class="dv">58820512</span> <span class="dv">1962-10-13</span> M[Male]    E[Employed] <span class="fl">2243.10</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-21" title="21"><span class="dv">16</span> <span class="dv">288242988</span> <span class="dv">2013-06-11</span> M[Male]    N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-22" title="22"><span class="dv">17</span> <span class="dv">549758863</span> <span class="dv">1990-06-09</span> M[Male]    E[Employed]  <span class="fl">719.69</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="tldrloadcode-23" title="23"><span class="dv">18</span> <span class="dv">998045846</span> <span class="dv">1973-01-25</span> F[Female]  E[Employed] <span class="fl">1312.45</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-24" title="24"><span class="dv">19</span> <span class="dv">902078272</span> <span class="dv">1962-05-29</span> F[Female]  E[Employed]  <span class="fl">618.27</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="tldrloadcode-25" title="25"><span class="dv">20</span> <span class="dv">594477489</span> <span class="dv">1952-08-31</span> <span class="op">-</span>[Unknown] N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>       <span class="ot">TRUE</span></a></code></pre></div>
+<p>When the data resource name is omitted from <code>dp_load_from_datapackage()</code> either the data resource with same name as the data package or the first data resource is opened.</p>
+<h2 id="getting-information-from-a-data-package">Getting information from a Data Package</h2>
+<p>Below we open an example Data Package that comes with the package:</p>
+<div class="sourceCode" id="g1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g1-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(datapackage, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="g1-2" title="2"><span class="op">&gt;</span><span class="st"> </span>dir &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;examples/employ&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;datapackage&quot;</span>)</a>
+<a class="sourceLine" id="g1-3" title="3"><span class="op">&gt;</span><span class="st"> </span>dp &lt;-<span class="st"> </span><span class="kw">open_datapackage</span>(dir)</a>
+<a class="sourceLine" id="g1-4" title="4"><span class="op">&gt;</span><span class="st"> </span>dp</a>
+<a class="sourceLine" id="g1-5" title="5">[example] Example data set <span class="cf">for</span> the datapackage package</a>
+<a class="sourceLine" id="g1-6" title="6"></a>
+<a class="sourceLine" id="g1-7" title="7">This is an example data set to show how the datapackage package can be used to import data into R.</a>
+<a class="sourceLine" id="g1-8" title="8">...</a>
+<a class="sourceLine" id="g1-9" title="9"></a>
+<a class="sourceLine" id="g1-10" title="10">Location<span class="op">:</span><span class="st"> </span><span class="er">&lt;/</span>tmp<span class="op">/</span>Rtmp8Y7fg1<span class="op">/</span>Rinstbfa223711ac<span class="op">/</span>datapackage<span class="op">/</span>examples<span class="op">/</span>employ<span class="op">&gt;</span></a>
+<a class="sourceLine" id="g1-11" title="11">Resources<span class="op">:</span></a>
+<a class="sourceLine" id="g1-12" title="12">[employment] Employment status</a>
+<a class="sourceLine" id="g1-13" title="13">[codelist<span class="op">-</span>gender] Code list <span class="cf">for</span> gender of person</a>
+<a class="sourceLine" id="g1-14" title="14">[codelist<span class="op">-</span>employ] Code list <span class="cf">for</span> employment status</a></code></pre></div>
+<p>The print statement shows the name of the package, <code>example</code>, the title, the first paragraph of the description, the location of the Data Package and the Data Resources in the package. In this case there are three Data Resources:</p>
+<div class="sourceCode" id="g2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g2-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_nresources</span>(dp)</a>
+<a class="sourceLine" id="g2-2" title="2">[<span class="dv">1</span>] <span class="dv">3</span></a></code></pre></div>
+<p>The names are</p>
+<div class="sourceCode" id="g3"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g3-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_resource_names</span>(dp)</a>
+<a class="sourceLine" id="g3-2" title="2">[<span class="dv">1</span>] <span class="st">&quot;employment&quot;</span>      <span class="st">&quot;codelist-gender&quot;</span> <span class="st">&quot;codelist-employ&quot;</span></a></code></pre></div>
+<p>Using the <code>resource()</code> method on the Data Package can obtain the Data Resource</p>
+<div class="sourceCode" id="g4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g4-1" title="1"><span class="op">&gt;</span><span class="st"> </span>employ &lt;-<span class="st"> </span><span class="kw">dp_resource</span>(dp, <span class="st">&quot;employment&quot;</span>)</a>
+<a class="sourceLine" id="g4-2" title="2"><span class="op">&gt;</span><span class="st"> </span>employ</a>
+<a class="sourceLine" id="g4-3" title="3">[employment] Employment status</a>
+<a class="sourceLine" id="g4-4" title="4"></a>
+<a class="sourceLine" id="g4-5" title="5">Employment status, income and background properties of sample of persons.</a>
+<a class="sourceLine" id="g4-6" title="6">...</a>
+<a class="sourceLine" id="g4-7" title="7"></a>
+<a class="sourceLine" id="g4-8" title="8">Selected properties<span class="op">:</span></a>
+<a class="sourceLine" id="g4-9" title="9">path     <span class="op">:</span><span class="st">&quot;employ.csv&quot;</span></a>
+<a class="sourceLine" id="g4-10" title="10">format   <span class="op">:</span><span class="st">&quot;csv&quot;</span></a>
+<a class="sourceLine" id="g4-11" title="11">mediatype<span class="op">:</span><span class="st">&quot;text/csv&quot;</span></a>
+<a class="sourceLine" id="g4-12" title="12">encoding <span class="op">:</span><span class="st">&quot;utf-8&quot;</span></a>
+<a class="sourceLine" id="g4-13" title="13">dialect  <span class="op">:</span>List of <span class="dv">3</span></a>
+<a class="sourceLine" id="g4-14" title="14">schema   <span class="op">:</span>Table Schema [<span class="dv">6</span>] <span class="st">&quot;id&quot;</span> <span class="st">&quot;dob&quot;</span> <span class="st">&quot;gender&quot;</span> <span class="st">&quot;employ&quot;</span> <span class="st">&quot;income&quot;</span> <span class="st">&quot;haspartner&quot;</span></a></code></pre></div>
+<p>The <code>print</code> statement again shows the name, title and description. It also shows that the data is in a CSV-file anmes <code>employ.csv</code>. Standard the <code>print</code> shows only a few properties of the Data Resource. To show all properties:</p>
+<div class="sourceCode" id="g5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g5-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">print</span>(employ, <span class="dt">properties =</span> <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="g5-2" title="2">[employment] Employment status</a>
+<a class="sourceLine" id="g5-3" title="3"></a>
+<a class="sourceLine" id="g5-4" title="4">Employment status, income and background properties of sample of persons.</a>
+<a class="sourceLine" id="g5-5" title="5">...</a>
+<a class="sourceLine" id="g5-6" title="6"></a>
+<a class="sourceLine" id="g5-7" title="7">Selected properties<span class="op">:</span></a>
+<a class="sourceLine" id="g5-8" title="8">path     <span class="op">:</span><span class="st">&quot;employ.csv&quot;</span></a>
+<a class="sourceLine" id="g5-9" title="9">format   <span class="op">:</span><span class="st">&quot;csv&quot;</span></a>
+<a class="sourceLine" id="g5-10" title="10">mediatype<span class="op">:</span><span class="st">&quot;text/csv&quot;</span></a>
+<a class="sourceLine" id="g5-11" title="11">encoding <span class="op">:</span><span class="st">&quot;utf-8&quot;</span></a>
+<a class="sourceLine" id="g5-12" title="12">dialect  <span class="op">:</span>List of <span class="dv">3</span></a>
+<a class="sourceLine" id="g5-13" title="13">schema   <span class="op">:</span>Table Schema [<span class="dv">6</span>] <span class="st">&quot;id&quot;</span> <span class="st">&quot;dob&quot;</span> <span class="st">&quot;gender&quot;</span> <span class="st">&quot;employ&quot;</span> <span class="st">&quot;income&quot;</span> <span class="st">&quot;haspartner&quot;</span></a></code></pre></div>
+<p>Using this information it should be possible to open the dataset. The data can be opened in R using the <code>dp_get_data()</code> method. Based on the information in the Data Resource this function will try to open the dataset using the correct functions in R (in this case <code>read.csv()</code>):</p>
+<div class="sourceCode" id="g6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g6-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">dp_get_data</span>(employ)</a>
+<a class="sourceLine" id="g6-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(dta)</a>
+<a class="sourceLine" id="g6-3" title="3">         id        dob gender employ  income haspartner</a>
+<a class="sourceLine" id="g6-4" title="4"><span class="dv">1</span> <span class="dv">368509515</span> <span class="dv">1993-06-14</span>      M      E <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="g6-5" title="5"><span class="dv">2</span> <span class="dv">187844355</span> <span class="dv">1961-10-08</span>      X      U      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="g6-6" title="6"><span class="dv">3</span> <span class="dv">273040044</span> <span class="dv">1982-06-17</span>      F      E  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="g6-7" title="7"><span class="dv">4</span> <span class="dv">963831798</span> <span class="dv">1965-02-15</span>      M      E  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="g6-8" title="8"><span class="dv">5</span> <span class="dv">854856378</span> <span class="dv">1990-01-30</span>      F      E  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="g6-9" title="9"><span class="dv">6</span>  <span class="dv">20072760</span> <span class="dv">1961-08-18</span>      F      E <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a></code></pre></div>
+<p>It is also possible to import the data directly from the Data Package object by specifying the resource for which the data needs to be imported.</p>
+<div class="sourceCode" id="g7"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g7-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">dp_get_data</span>(dp, <span class="st">&quot;employment&quot;</span>)</a></code></pre></div>
+<p>The <code>dp_get_data()</code> method only supports a limited set of data formats. It is possible to also provide a custum function to read the data using the <code>reader</code> argument of <code>dp_get_data()</code>. However, it is also possible to import the data ‘manually’ using the information in the Data Package. The path of the file in a Data Resource can be obtained using the <code>dp_path()</code> method:</p>
+<div class="sourceCode" id="g8"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g8-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_path</span>(employ)</a>
+<a class="sourceLine" id="g8-2" title="2">[<span class="dv">1</span>] <span class="st">&quot;employ.csv&quot;</span></a></code></pre></div>
+<p>By default this will return the path as defined in the Data Package. This either a path relative to the directory in which the Data Package is located or a URL. To open a file inside the Data Package one also needs the location of the Data Package. Using the <code>full_path = TRUE</code> argument, <code>dp_path()</code> will return the full path to the file:</p>
+<div class="sourceCode" id="g10"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g10-1" title="1"><span class="op">&gt;</span><span class="st"> </span>fn &lt;-<span class="st"> </span><span class="kw">dp_path</span>(employ, <span class="dt">full_path =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>This path can be used to open the file manually:</p>
+<div class="sourceCode" id="g11"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g11-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">read.csv2</span>(fn)</a>
+<a class="sourceLine" id="g11-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(dta)</a>
+<a class="sourceLine" id="g11-3" title="3">         id        dob gender employ   income haspartner</a>
+<a class="sourceLine" id="g11-4" title="4"><span class="dv">1</span> <span class="dv">368509515</span> <span class="dv">1993-06-14</span>      M      E €<span class="dv">2</span> <span class="dv">691</span>,<span class="dv">8</span>          N</a>
+<a class="sourceLine" id="g11-5" title="5"><span class="dv">2</span> <span class="dv">187844355</span> <span class="dv">1961-10-08</span>      X      U     <span class="op">&lt;</span><span class="ot">NA</span><span class="op">&gt;</span><span class="st">          </span>N</a>
+<a class="sourceLine" id="g11-6" title="6"><span class="dv">3</span> <span class="dv">273040044</span> <span class="dv">1982-06-17</span>      F      E  €<span class="dv">533</span>,<span class="dv">65</span>          N</a>
+<a class="sourceLine" id="g11-7" title="7"><span class="dv">4</span> <span class="dv">963831798</span> <span class="dv">1965-02-15</span>      M      E  €<span class="dv">790</span>,<span class="dv">13</span>          N</a>
+<a class="sourceLine" id="g11-8" title="8"><span class="dv">5</span> <span class="dv">854856378</span> <span class="dv">1990-01-30</span>      F      E  €<span class="dv">716</span>,<span class="dv">79</span>          Y</a>
+<a class="sourceLine" id="g11-9" title="9"><span class="dv">6</span>  <span class="dv">20072760</span> <span class="dv">1961-08-18</span>      F      E €<span class="dv">1</span> <span class="dv">651</span>,<span class="dv">6</span>          N</a></code></pre></div>
+<p>First, note that we had to ‘know’ that we had to use <code>read.csv2</code> since the file uses the ‘<code>;</code>’ as field separator. Information like this is stored in the ‘dialect’ property of a data resource:</p>
+<div class="sourceCode" id="dialect"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="dialect-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_property</span>(employ, <span class="st">&quot;dialect&quot;</span>)</a>
+<a class="sourceLine" id="dialect-2" title="2"><span class="op">$</span>decimalChar</a>
+<a class="sourceLine" id="dialect-3" title="3">[<span class="dv">1</span>] <span class="st">&quot;,&quot;</span></a>
+<a class="sourceLine" id="dialect-4" title="4"></a>
+<a class="sourceLine" id="dialect-5" title="5"><span class="op">$</span>delimiter</a>
+<a class="sourceLine" id="dialect-6" title="6">[<span class="dv">1</span>] <span class="st">&quot;;&quot;</span></a>
+<a class="sourceLine" id="dialect-7" title="7"></a>
+<a class="sourceLine" id="dialect-8" title="8"><span class="op">$</span>nullSequence</a>
+<a class="sourceLine" id="dialect-9" title="9">[<span class="dv">1</span>] <span class="st">&quot;NA&quot;</span></a></code></pre></div>
+<p>Second, note that the field ‘income’ is not converted to numeric as this field contains euro symbols and used a space as thousands separator. Information like this is stored in the field descriptor:</p>
+<div class="sourceCode" id="income"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="income-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_field</span>(employ, <span class="st">&quot;income&quot;</span>)</a>
+<a class="sourceLine" id="income-2" title="2">Field Descriptor<span class="op">:</span></a>
+<a class="sourceLine" id="income-3" title="3">name       <span class="op">:</span><span class="st">&quot;income&quot;</span></a>
+<a class="sourceLine" id="income-4" title="4">title      <span class="op">:</span><span class="st">&quot;Net income&quot;</span></a>
+<a class="sourceLine" id="income-5" title="5">type       <span class="op">:</span><span class="st">&quot;number&quot;</span></a>
+<a class="sourceLine" id="income-6" title="6">bareNumber <span class="op">:</span><span class="ot">FALSE</span></a>
+<a class="sourceLine" id="income-7" title="7">decimalChar<span class="op">:</span><span class="st">&quot;,&quot;</span></a>
+<a class="sourceLine" id="income-8" title="8">groupChar  <span class="op">:</span><span class="st">&quot; &quot;</span></a></code></pre></div>
+<p><code>dp_get_data()</code> uses the information from the field descriptors and dialect to automatically convert variables as much a possible to their most fitting R types. This is done using the <code>dp_apply_schema()</code> function:</p>
+<div class="sourceCode" id="dpapplyschema"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="dpapplyschema-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_apply_schema</span>(dta, employ)</a>
+<a class="sourceLine" id="dpapplyschema-2" title="2">          id        dob gender employ  income haspartner</a>
+<a class="sourceLine" id="dpapplyschema-3" title="3"><span class="dv">1</span>  <span class="dv">368509515</span> <span class="dv">1993-06-14</span>      M      E <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-4" title="4"><span class="dv">2</span>  <span class="dv">187844355</span> <span class="dv">1961-10-08</span>      X      U      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-5" title="5"><span class="dv">3</span>  <span class="dv">273040044</span> <span class="dv">1982-06-17</span>      F      E  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-6" title="6"><span class="dv">4</span>  <span class="dv">963831798</span> <span class="dv">1965-02-15</span>      M      E  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-7" title="7"><span class="dv">5</span>  <span class="dv">854856378</span> <span class="dv">1990-01-30</span>      F      E  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="dpapplyschema-8" title="8"><span class="dv">6</span>   <span class="dv">20072760</span> <span class="dv">1961-08-18</span>      F      E <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-9" title="9"><span class="dv">7</span>  <span class="dv">429782078</span> <span class="dv">2019-09-23</span>      M      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-10" title="10"><span class="dv">8</span>  <span class="dv">711292034</span> <span class="dv">1994-02-16</span>      M      E  <span class="fl">455.98</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-11" title="11"><span class="dv">9</span>  <span class="dv">949458305</span> <span class="dv">2005-06-16</span>      F      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-12" title="12"><span class="dv">10</span> <span class="dv">911459071</span> <span class="dv">2007-02-27</span>      F      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-13" title="13"><span class="dv">11</span> <span class="dv">921370403</span> <span class="dv">1981-09-14</span>      F      E <span class="fl">1461.36</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-14" title="14"><span class="dv">12</span>  <span class="dv">26901869</span> <span class="dv">1981-03-08</span>      F      E <span class="fl">1153.02</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="dpapplyschema-15" title="15"><span class="dv">13</span> <span class="dv">640668848</span> <span class="dv">1993-08-30</span>      M      E  <span class="fl">708.98</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="dpapplyschema-16" title="16"><span class="dv">14</span> <span class="dv">996464509</span> <span class="dv">1960-12-10</span>      M      E <span class="fl">1088.99</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-17" title="17"><span class="dv">15</span>  <span class="dv">58820512</span> <span class="dv">1962-10-13</span>      M      E <span class="fl">2243.10</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-18" title="18"><span class="dv">16</span> <span class="dv">288242988</span> <span class="dv">2013-06-11</span>      M      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-19" title="19"><span class="dv">17</span> <span class="dv">549758863</span> <span class="dv">1990-06-09</span>      M      E  <span class="fl">719.69</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="dpapplyschema-20" title="20"><span class="dv">18</span> <span class="dv">998045846</span> <span class="dv">1973-01-25</span>      F      E <span class="fl">1312.45</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-21" title="21"><span class="dv">19</span> <span class="dv">902078272</span> <span class="dv">1962-05-29</span>      F      E  <span class="fl">618.27</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="dpapplyschema-22" title="22"><span class="dv">20</span> <span class="dv">594477489</span> <span class="dv">1952-08-31</span>      <span class="op">-</span><span class="st">      </span>N      <span class="ot">NA</span>       <span class="ot">TRUE</span></a></code></pre></div>
+<p>Finally, note that the <code>path</code> property of a Data Resource can be a vector of paths in case a single data set is stored in a set of files. It is assumed then that the files have the same format. Therefore, <code>rbind</code> should work on these files.</p>
+<p>Below is an alternative way of importing the data belonging to a Data Resource. Here we use the pipe operator to chain the various commands to import the data set.</p>
+<div class="sourceCode" id="g12"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="g12-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">dp_resource</span>(dp, <span class="st">&quot;employment&quot;</span>) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">dp_get_data</span>()</a>
+<a class="sourceLine" id="g12-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(dta)</a>
+<a class="sourceLine" id="g12-3" title="3">         id        dob gender employ  income haspartner</a>
+<a class="sourceLine" id="g12-4" title="4"><span class="dv">1</span> <span class="dv">368509515</span> <span class="dv">1993-06-14</span>      M      E <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="g12-5" title="5"><span class="dv">2</span> <span class="dv">187844355</span> <span class="dv">1961-10-08</span>      X      U      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="g12-6" title="6"><span class="dv">3</span> <span class="dv">273040044</span> <span class="dv">1982-06-17</span>      F      E  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="g12-7" title="7"><span class="dv">4</span> <span class="dv">963831798</span> <span class="dv">1965-02-15</span>      M      E  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="g12-8" title="8"><span class="dv">5</span> <span class="dv">854856378</span> <span class="dv">1990-01-30</span>      F      E  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="g12-9" title="9"><span class="dv">6</span>  <span class="dv">20072760</span> <span class="dv">1961-08-18</span>      F      E <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a></code></pre></div>
+<h2 id="reading-properties-from-data-packages-and-data-resources">Reading properties from Data Packages and Data Resources</h2>
+<p>For many of the standard fields of a Data Packages, methods are defined to obtain the values of these fields:</p>
+<div class="sourceCode" id="r1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="r1-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_name</span>(dp)</a>
+<a class="sourceLine" id="r1-2" title="2">[<span class="dv">1</span>] <span class="st">&quot;example&quot;</span></a>
+<a class="sourceLine" id="r1-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_description</span>(dp)</a>
+<a class="sourceLine" id="r1-4" title="4">[<span class="dv">1</span>] <span class="st">&quot;This is an example data set to show how the datapackage package can be used to import data into R.</span><span class="ch">\n\n</span><span class="st">Its main data resource is the `employ` resource which contains fictional data about individuals. The other data resources are supporting data sets.&quot;</span></a>
+<a class="sourceLine" id="r1-5" title="5"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_description</span>(dp, <span class="dt">first_paragraph =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="r1-6" title="6">[<span class="dv">1</span>] <span class="st">&quot;This is an example data set to show how the datapackage package can be used to import data into R.&quot;</span></a>
+<a class="sourceLine" id="r1-7" title="7"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_title</span>(dp)</a>
+<a class="sourceLine" id="r1-8" title="8">[<span class="dv">1</span>] <span class="st">&quot;Example data set for the datapackage package&quot;</span></a></code></pre></div>
+<p>The same holds for Data Resources:</p>
+<div class="sourceCode" id="r2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="r2-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_title</span>(employ)</a>
+<a class="sourceLine" id="r2-2" title="2">[<span class="dv">1</span>] <span class="st">&quot;Employment status&quot;</span></a>
+<a class="sourceLine" id="r2-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_resource</span>(dp, <span class="st">&quot;codelist-employ&quot;</span>) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">dp_title</span>()</a>
+<a class="sourceLine" id="r2-4" title="4">[<span class="dv">1</span>] <span class="st">&quot;Code list for employment status&quot;</span></a></code></pre></div>
+<p>For <code>datapackage</code> objects there are currently defined the following methods: (this list can be obtained using <code>?PropertiesDatapackage</code>)</p>
+<ul>
+<li><code>dp_contributors()</code></li>
+<li><code>dp_created()</code></li>
+<li><code>dp_description()</code></li>
+<li><code>dp_id()</code></li>
+<li><code>dp_keywords()</code></li>
+<li><code>dp_name()</code></li>
+<li><code>dp_title()</code></li>
+</ul>
+<p>For <code>dataresource</code> objects there are currently defined the following methods (this list can be obtained using <code>?PropertiesDataresource</code>)</p>
+<ul>
+<li><code>dp_bytes()</code></li>
+<li><code>dp_encoding()</code></li>
+<li><code>dp_description()</code></li>
+<li><code>dp_format()</code></li>
+<li><code>dp_hash()</code></li>
+<li><code>dp_name()</code></li>
+<li><code>dp_mediatype()</code></li>
+<li><code>dp_path()</code></li>
+<li><code>dp_schema()</code></li>
+<li><code>dp_title()</code></li>
+</ul>
+<p>The <code>dp_path()</code> method has a <code>full_path</code> argument that, when used, returns the full path to the Data Resources data and not just the path relative to the Data Package. The full path is needed when one wants to use the path to read the data.</p>
+<div class="sourceCode" id="r3"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="r3-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_path</span>(employ)</a>
+<a class="sourceLine" id="r3-2" title="2">[<span class="dv">1</span>] <span class="st">&quot;employ.csv&quot;</span></a>
+<a class="sourceLine" id="r3-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_path</span>(employ, <span class="dt">full_path =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="r3-4" title="4">[<span class="dv">1</span>] <span class="st">&quot;/tmp/Rtmp8Y7fg1/Rinstbfa223711ac/datapackage/examples/employ/employ.csv&quot;</span></a></code></pre></div>
+<p>It is also possible to get other properties than the ones explicitly mentioned above using the <code>dp_property()</code> method:</p>
+<div class="sourceCode" id="r4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="r4-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_property</span>(employ, <span class="st">&quot;encoding&quot;</span>)</a>
+<a class="sourceLine" id="r4-2" title="2">[<span class="dv">1</span>] <span class="st">&quot;utf-8&quot;</span></a></code></pre></div>
+<h2 id="working-with-categories">Working with categories</h2>
+<p>It is possible for fields to have a list of <a href="https://datapackage.org/standard/table-schema/#categories">categories associated with them</a>. Categories are usually stored inside the Field Descriptor. However, the <code>datapackage</code> package also supports lists of categories stored in a seperate Data Resource (this is not part of the datapackage standard).</p>
+<p>In the example resource, there is are ‘gender’ and ‘employ’ that have categories associated with them:</p>
+<div class="sourceCode" id="c1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="c1-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">dp_resource</span>(dp, <span class="st">&quot;employment&quot;</span>) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">dp_get_data</span>()</a>
+<a class="sourceLine" id="c1-2" title="2"><span class="op">&gt;</span><span class="st"> </span>dta</a>
+<a class="sourceLine" id="c1-3" title="3">          id        dob gender employ  income haspartner</a>
+<a class="sourceLine" id="c1-4" title="4"><span class="dv">1</span>  <span class="dv">368509515</span> <span class="dv">1993-06-14</span>      M      E <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-5" title="5"><span class="dv">2</span>  <span class="dv">187844355</span> <span class="dv">1961-10-08</span>      X      U      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-6" title="6"><span class="dv">3</span>  <span class="dv">273040044</span> <span class="dv">1982-06-17</span>      F      E  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-7" title="7"><span class="dv">4</span>  <span class="dv">963831798</span> <span class="dv">1965-02-15</span>      M      E  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-8" title="8"><span class="dv">5</span>  <span class="dv">854856378</span> <span class="dv">1990-01-30</span>      F      E  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c1-9" title="9"><span class="dv">6</span>   <span class="dv">20072760</span> <span class="dv">1961-08-18</span>      F      E <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-10" title="10"><span class="dv">7</span>  <span class="dv">429782078</span> <span class="dv">2019-09-23</span>      M      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-11" title="11"><span class="dv">8</span>  <span class="dv">711292034</span> <span class="dv">1994-02-16</span>      M      E  <span class="fl">455.98</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-12" title="12"><span class="dv">9</span>  <span class="dv">949458305</span> <span class="dv">2005-06-16</span>      F      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-13" title="13"><span class="dv">10</span> <span class="dv">911459071</span> <span class="dv">2007-02-27</span>      F      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-14" title="14"><span class="dv">11</span> <span class="dv">921370403</span> <span class="dv">1981-09-14</span>      F      E <span class="fl">1461.36</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-15" title="15"><span class="dv">12</span>  <span class="dv">26901869</span> <span class="dv">1981-03-08</span>      F      E <span class="fl">1153.02</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c1-16" title="16"><span class="dv">13</span> <span class="dv">640668848</span> <span class="dv">1993-08-30</span>      M      E  <span class="fl">708.98</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c1-17" title="17"><span class="dv">14</span> <span class="dv">996464509</span> <span class="dv">1960-12-10</span>      M      E <span class="fl">1088.99</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-18" title="18"><span class="dv">15</span>  <span class="dv">58820512</span> <span class="dv">1962-10-13</span>      M      E <span class="fl">2243.10</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-19" title="19"><span class="dv">16</span> <span class="dv">288242988</span> <span class="dv">2013-06-11</span>      M      N      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-20" title="20"><span class="dv">17</span> <span class="dv">549758863</span> <span class="dv">1990-06-09</span>      M      E  <span class="fl">719.69</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c1-21" title="21"><span class="dv">18</span> <span class="dv">998045846</span> <span class="dv">1973-01-25</span>      F      E <span class="fl">1312.45</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-22" title="22"><span class="dv">19</span> <span class="dv">902078272</span> <span class="dv">1962-05-29</span>      F      E  <span class="fl">618.27</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c1-23" title="23"><span class="dv">20</span> <span class="dv">594477489</span> <span class="dv">1952-08-31</span>      <span class="op">-</span><span class="st">      </span>N      <span class="ot">NA</span>       <span class="ot">TRUE</span></a></code></pre></div>
+<p>This is string column but it has an ‘categories’ property set which points to a Data Resource in the Data Package. It is possible te get this list of</p>
+<p>categories</p>
+<div class="sourceCode" id="c2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="c2-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_categorieslist</span>(dta<span class="op">$</span>employ)</a>
+<a class="sourceLine" id="c2-2" title="2">  code                  label missing</a>
+<a class="sourceLine" id="c2-3" title="3"><span class="dv">1</span>    E               Employed   <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c2-4" title="4"><span class="dv">2</span>    U             Unemployed   <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c2-5" title="5"><span class="dv">3</span>    N Non<span class="op">-</span>working<span class="op">-</span>population   <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c2-6" title="6"><span class="dv">4</span>    X                Unknown    <span class="ot">TRUE</span></a></code></pre></div>
+<p>This list of categories can also be used to convert the field to factor:</p>
+<div class="sourceCode" id="c3"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="c3-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_to_factor</span>(dta<span class="op">$</span>employ)</a>
+<a class="sourceLine" id="c3-2" title="2"> [<span class="dv">1</span>] Employed               Unemployed             Employed              </a>
+<a class="sourceLine" id="c3-3" title="3"> [<span class="dv">4</span>] Employed               Employed               Employed              </a>
+<a class="sourceLine" id="c3-4" title="4"> [<span class="dv">7</span>] Non<span class="op">-</span>working<span class="op">-</span>population Employed               Non<span class="op">-</span>working<span class="op">-</span>population</a>
+<a class="sourceLine" id="c3-5" title="5">[<span class="dv">10</span>] Non<span class="op">-</span>working<span class="op">-</span>population Employed               Employed              </a>
+<a class="sourceLine" id="c3-6" title="6">[<span class="dv">13</span>] Employed               Employed               Employed              </a>
+<a class="sourceLine" id="c3-7" title="7">[<span class="dv">16</span>] Non<span class="op">-</span>working<span class="op">-</span>population Employed               Employed              </a>
+<a class="sourceLine" id="c3-8" title="8">[<span class="dv">19</span>] Employed               Non<span class="op">-</span>working<span class="op">-</span>population</a>
+<a class="sourceLine" id="c3-9" title="9"><span class="kw">attr</span>(,<span class="st">&quot;fielddescriptor&quot;</span>)</a>
+<a class="sourceLine" id="c3-10" title="10">Field Descriptor<span class="op">:</span></a>
+<a class="sourceLine" id="c3-11" title="11">name      <span class="op">:</span><span class="st">&quot;employ&quot;</span></a>
+<a class="sourceLine" id="c3-12" title="12">title     <span class="op">:</span><span class="st">&quot;Employment status&quot;</span></a>
+<a class="sourceLine" id="c3-13" title="13">type      <span class="op">:</span><span class="st">&quot;string&quot;</span></a>
+<a class="sourceLine" id="c3-14" title="14">categories<span class="op">:</span>List of <span class="dv">1</span></a>
+<a class="sourceLine" id="c3-15" title="15">Levels<span class="op">:</span><span class="st"> </span>Employed Unemployed Non<span class="op">-</span>working<span class="op">-</span>population Unknown</a></code></pre></div>
+<p>Using the <code>convert_categories = &quot;to_factor&quot;</code> argument of <code>dp_apply_schema()</code> (which is called by <code>dp_get_data()</code>) it is also possible to convert all fields which have an associated ‘categories’ field to factor:</p>
+<div class="sourceCode" id="c4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="c4-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">dp_resource</span>(dp, <span class="st">&quot;employment&quot;</span>) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span></a>
+<a class="sourceLine" id="c4-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">dp_get_data</span>(<span class="dt">convert_categories =</span> <span class="st">&quot;to_factor&quot;</span>)</a>
+<a class="sourceLine" id="c4-3" title="3"><span class="op">&gt;</span><span class="st"> </span>dta</a>
+<a class="sourceLine" id="c4-4" title="4">          id        dob  gender                 employ  income haspartner</a>
+<a class="sourceLine" id="c4-5" title="5"><span class="dv">1</span>  <span class="dv">368509515</span> <span class="dv">1993-06-14</span>    Male               Employed <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-6" title="6"><span class="dv">2</span>  <span class="dv">187844355</span> <span class="dv">1961-10-08</span>   Other             Unemployed      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-7" title="7"><span class="dv">3</span>  <span class="dv">273040044</span> <span class="dv">1982-06-17</span>  Female               Employed  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-8" title="8"><span class="dv">4</span>  <span class="dv">963831798</span> <span class="dv">1965-02-15</span>    Male               Employed  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-9" title="9"><span class="dv">5</span>  <span class="dv">854856378</span> <span class="dv">1990-01-30</span>  Female               Employed  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c4-10" title="10"><span class="dv">6</span>   <span class="dv">20072760</span> <span class="dv">1961-08-18</span>  Female               Employed <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-11" title="11"><span class="dv">7</span>  <span class="dv">429782078</span> <span class="dv">2019-09-23</span>    Male Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-12" title="12"><span class="dv">8</span>  <span class="dv">711292034</span> <span class="dv">1994-02-16</span>    Male               Employed  <span class="fl">455.98</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-13" title="13"><span class="dv">9</span>  <span class="dv">949458305</span> <span class="dv">2005-06-16</span>  Female Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-14" title="14"><span class="dv">10</span> <span class="dv">911459071</span> <span class="dv">2007-02-27</span>  Female Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-15" title="15"><span class="dv">11</span> <span class="dv">921370403</span> <span class="dv">1981-09-14</span>  Female               Employed <span class="fl">1461.36</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-16" title="16"><span class="dv">12</span>  <span class="dv">26901869</span> <span class="dv">1981-03-08</span>  Female               Employed <span class="fl">1153.02</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c4-17" title="17"><span class="dv">13</span> <span class="dv">640668848</span> <span class="dv">1993-08-30</span>    Male               Employed  <span class="fl">708.98</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c4-18" title="18"><span class="dv">14</span> <span class="dv">996464509</span> <span class="dv">1960-12-10</span>    Male               Employed <span class="fl">1088.99</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-19" title="19"><span class="dv">15</span>  <span class="dv">58820512</span> <span class="dv">1962-10-13</span>    Male               Employed <span class="fl">2243.10</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-20" title="20"><span class="dv">16</span> <span class="dv">288242988</span> <span class="dv">2013-06-11</span>    Male Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-21" title="21"><span class="dv">17</span> <span class="dv">549758863</span> <span class="dv">1990-06-09</span>    Male               Employed  <span class="fl">719.69</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c4-22" title="22"><span class="dv">18</span> <span class="dv">998045846</span> <span class="dv">1973-01-25</span>  Female               Employed <span class="fl">1312.45</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-23" title="23"><span class="dv">19</span> <span class="dv">902078272</span> <span class="dv">1962-05-29</span>  Female               Employed  <span class="fl">618.27</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-24" title="24"><span class="dv">20</span> <span class="dv">594477489</span> <span class="dv">1952-08-31</span> Unknown Non<span class="op">-</span>working<span class="op">-</span>population      <span class="ot">NA</span>       <span class="ot">TRUE</span></a></code></pre></div>
+<p>When the <a href="https://cran.r-project.org/package=codelist"><code>codelist</code> package</a> is installed, it is also possible to convert the column to a <code>code</code> vector:</p>
+<div class="sourceCode" id="c4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="c4-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dta &lt;-<span class="st"> </span><span class="kw">dp_resource</span>(dp, <span class="st">&quot;employment&quot;</span>) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span></a>
+<a class="sourceLine" id="c4-2" title="2"><span class="op">+</span><span class="st">   </span><span class="kw">dp_get_data</span>(<span class="dt">convert_categories =</span> <span class="st">&quot;to_code&quot;</span>)</a>
+<a class="sourceLine" id="c4-3" title="3"><span class="op">&gt;</span><span class="st"> </span>dta</a>
+<a class="sourceLine" id="c4-4" title="4">          id        dob     gender      employ  income haspartner</a>
+<a class="sourceLine" id="c4-5" title="5"><span class="dv">1</span>  <span class="dv">368509515</span> <span class="dv">1993-06-14</span> M[Male]    E[Employed] <span class="fl">2691.80</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-6" title="6"><span class="dv">2</span>  <span class="dv">187844355</span> <span class="dv">1961-10-08</span> X[Other]   U[Unemplo…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-7" title="7"><span class="dv">3</span>  <span class="dv">273040044</span> <span class="dv">1982-06-17</span> F[Female]  E[Employed]  <span class="fl">533.65</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-8" title="8"><span class="dv">4</span>  <span class="dv">963831798</span> <span class="dv">1965-02-15</span> M[Male]    E[Employed]  <span class="fl">790.13</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-9" title="9"><span class="dv">5</span>  <span class="dv">854856378</span> <span class="dv">1990-01-30</span> F[Female]  E[Employed]  <span class="fl">716.79</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c4-10" title="10"><span class="dv">6</span>   <span class="dv">20072760</span> <span class="dv">1961-08-18</span> F[Female]  E[Employed] <span class="fl">1651.60</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-11" title="11"><span class="dv">7</span>  <span class="dv">429782078</span> <span class="dv">2019-09-23</span> M[Male]    N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-12" title="12"><span class="dv">8</span>  <span class="dv">711292034</span> <span class="dv">1994-02-16</span> M[Male]    E[Employed]  <span class="fl">455.98</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-13" title="13"><span class="dv">9</span>  <span class="dv">949458305</span> <span class="dv">2005-06-16</span> F[Female]  N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-14" title="14"><span class="dv">10</span> <span class="dv">911459071</span> <span class="dv">2007-02-27</span> F[Female]  N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-15" title="15"><span class="dv">11</span> <span class="dv">921370403</span> <span class="dv">1981-09-14</span> F[Female]  E[Employed] <span class="fl">1461.36</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-16" title="16"><span class="dv">12</span>  <span class="dv">26901869</span> <span class="dv">1981-03-08</span> F[Female]  E[Employed] <span class="fl">1153.02</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c4-17" title="17"><span class="dv">13</span> <span class="dv">640668848</span> <span class="dv">1993-08-30</span> M[Male]    E[Employed]  <span class="fl">708.98</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c4-18" title="18"><span class="dv">14</span> <span class="dv">996464509</span> <span class="dv">1960-12-10</span> M[Male]    E[Employed] <span class="fl">1088.99</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-19" title="19"><span class="dv">15</span>  <span class="dv">58820512</span> <span class="dv">1962-10-13</span> M[Male]    E[Employed] <span class="fl">2243.10</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-20" title="20"><span class="dv">16</span> <span class="dv">288242988</span> <span class="dv">2013-06-11</span> M[Male]    N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-21" title="21"><span class="dv">17</span> <span class="dv">549758863</span> <span class="dv">1990-06-09</span> M[Male]    E[Employed]  <span class="fl">719.69</span>       <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="c4-22" title="22"><span class="dv">18</span> <span class="dv">998045846</span> <span class="dv">1973-01-25</span> F[Female]  E[Employed] <span class="fl">1312.45</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-23" title="23"><span class="dv">19</span> <span class="dv">902078272</span> <span class="dv">1962-05-29</span> F[Female]  E[Employed]  <span class="fl">618.27</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="c4-24" title="24"><span class="dv">20</span> <span class="dv">594477489</span> <span class="dv">1952-08-31</span> <span class="op">-</span>[Unknown] N[Non<span class="op">-</span>wor…]      <span class="ot">NA</span>       <span class="ot">TRUE</span></a></code></pre></div>
+<p>This has the advantage that both the values/codes and the labels are kept together and it is possible to use both when coding which can make code safer and more readable:</p>
+<div class="sourceCode" id="codedemo"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="codedemo-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(codelist)</a>
+<a class="sourceLine" id="codedemo-2" title="2"><span class="op">&gt;</span><span class="st"> </span>dta[dta<span class="op">$</span>gender <span class="op">==</span><span class="st"> &quot;X&quot;</span>, ]</a>
+<a class="sourceLine" id="codedemo-3" title="3">         id        dob   gender      employ income haspartner</a>
+<a class="sourceLine" id="codedemo-4" title="4"><span class="dv">2</span> <span class="dv">187844355</span> <span class="dv">1961-10-08</span> X[Other] U[Unemplo…]     <span class="ot">NA</span>      <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="codedemo-5" title="5"><span class="op">&gt;</span><span class="st"> </span>dta[dta<span class="op">$</span>gender <span class="op">==</span><span class="st"> </span><span class="kw">as.label</span>(<span class="st">&quot;Other&quot;</span>), ]</a>
+<a class="sourceLine" id="codedemo-6" title="6">         id        dob   gender      employ income haspartner</a>
+<a class="sourceLine" id="codedemo-7" title="7"><span class="dv">2</span> <span class="dv">187844355</span> <span class="dv">1961-10-08</span> X[Other] U[Unemplo…]     <span class="ot">NA</span>      <span class="ot">FALSE</span></a></code></pre></div>
+<h2 id="creating-a-data-package">Creating a Data Package</h2>
+<p>This is shown in a seperate vignette <code>Creating a Data Package</code></p>
+<h2 id="quickly-saving-to-and-reading-from-a-data-package">Quickly saving to and reading from a Data Package</h2>
+<p>A quick way to create a Data Package from a given dataset is with the <code>dp_save_as_datapackage()</code> function:</p>
+<div class="sourceCode" id="q1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="q1-1" title="1"><span class="op">&gt;</span><span class="st"> </span>dir &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</a>
+<a class="sourceLine" id="q1-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="q1-3" title="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_save_as_datapackage</span>(iris, dir)</a></code></pre></div>
+<p>And for reading:</p>
+<div class="sourceCode" id="q2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="q2-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_load_from_datapackage</span>(dir) <span class="op">|</span><span class="er">&gt;</span><span class="st"> </span><span class="kw">head</span>()</a>
+<a class="sourceLine" id="q2-2" title="2">  Sepal.Length Sepal.Width Petal.Length Petal.Width Species</a>
+<a class="sourceLine" id="q2-3" title="3"><span class="dv">1</span>          <span class="fl">5.1</span>         <span class="fl">3.5</span>          <span class="fl">1.4</span>         <span class="fl">0.2</span>       <span class="dv">1</span></a>
+<a class="sourceLine" id="q2-4" title="4"><span class="dv">2</span>          <span class="fl">4.9</span>         <span class="fl">3.0</span>          <span class="fl">1.4</span>         <span class="fl">0.2</span>       <span class="dv">1</span></a>
+<a class="sourceLine" id="q2-5" title="5"><span class="dv">3</span>          <span class="fl">4.7</span>         <span class="fl">3.2</span>          <span class="fl">1.3</span>         <span class="fl">0.2</span>       <span class="dv">1</span></a>
+<a class="sourceLine" id="q2-6" title="6"><span class="dv">4</span>          <span class="fl">4.6</span>         <span class="fl">3.1</span>          <span class="fl">1.5</span>         <span class="fl">0.2</span>       <span class="dv">1</span></a>
+<a class="sourceLine" id="q2-7" title="7"><span class="dv">5</span>          <span class="fl">5.0</span>         <span class="fl">3.6</span>          <span class="fl">1.4</span>         <span class="fl">0.2</span>       <span class="dv">1</span></a>
+<a class="sourceLine" id="q2-8" title="8"><span class="dv">6</span>          <span class="fl">5.4</span>         <span class="fl">3.9</span>          <span class="fl">1.7</span>         <span class="fl">0.4</span>       <span class="dv">1</span></a></code></pre></div>
+<p>This will either load the Data Resource with the same name as the Data Package or the first resource in the Data Package. It is also possible to specify the name of the Data Resource that should be read. Additional arguments are passed on to <code>dp_get_data())</code>:</p>
+<div class="sourceCode" id="q2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="q2-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dp_load_from_datapackage</span>(dir, <span class="st">&quot;iris&quot;</span>, <span class="dt">convert_categories =</span> <span class="st">&quot;to_factor&quot;</span>, </a>
+<a class="sourceLine" id="q2-2" title="2"><span class="op">+</span><span class="st">   </span><span class="dt">use_fread =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="q2-3" title="3">Loading required namespace<span class="op">:</span><span class="st"> </span>data.table</a>
+<a class="sourceLine" id="q2-4" title="4"> </a>
+<a class="sourceLine" id="q2-5" title="5">     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species</a>
+<a class="sourceLine" id="q2-6" title="6">  <span class="dv">1</span><span class="op">:</span><span class="st">          </span><span class="fl">5.1</span>         <span class="fl">3.5</span>          <span class="fl">1.4</span>         <span class="fl">0.2</span>    setosa</a>
+<a class="sourceLine" id="q2-7" title="7">  <span class="dv">2</span><span class="op">:</span><span class="st">          </span><span class="fl">4.9</span>         <span class="fl">3.0</span>          <span class="fl">1.4</span>         <span class="fl">0.2</span>    setosa</a>
+<a class="sourceLine" id="q2-8" title="8">  <span class="dv">3</span><span class="op">:</span><span class="st">          </span><span class="fl">4.7</span>         <span class="fl">3.2</span>          <span class="fl">1.3</span>         <span class="fl">0.2</span>    setosa</a>
+<a class="sourceLine" id="q2-9" title="9">  <span class="dv">4</span><span class="op">:</span><span class="st">          </span><span class="fl">4.6</span>         <span class="fl">3.1</span>          <span class="fl">1.5</span>         <span class="fl">0.2</span>    setosa</a>
+<a class="sourceLine" id="q2-10" title="10">  <span class="dv">5</span><span class="op">:</span><span class="st">          </span><span class="fl">5.0</span>         <span class="fl">3.6</span>          <span class="fl">1.4</span>         <span class="fl">0.2</span>    setosa</a>
+<a class="sourceLine" id="q2-11" title="11"> <span class="op">---</span><span class="st">                                                            </span></a>
+<a class="sourceLine" id="q2-12" title="12"><span class="dv">146</span><span class="op">:</span><span class="st">          </span><span class="fl">6.7</span>         <span class="fl">3.0</span>          <span class="fl">5.2</span>         <span class="fl">2.3</span> virginica</a>
+<a class="sourceLine" id="q2-13" title="13"><span class="dv">147</span><span class="op">:</span><span class="st">          </span><span class="fl">6.3</span>         <span class="fl">2.5</span>          <span class="fl">5.0</span>         <span class="fl">1.9</span> virginica</a>
+<a class="sourceLine" id="q2-14" title="14"><span class="dv">148</span><span class="op">:</span><span class="st">          </span><span class="fl">6.5</span>         <span class="fl">3.0</span>          <span class="fl">5.2</span>         <span class="fl">2.0</span> virginica</a>
+<a class="sourceLine" id="q2-15" title="15"><span class="dv">149</span><span class="op">:</span><span class="st">          </span><span class="fl">6.2</span>         <span class="fl">3.4</span>          <span class="fl">5.4</span>         <span class="fl">2.3</span> virginica</a>
+<a class="sourceLine" id="q2-16" title="16"><span class="dv">150</span><span class="op">:</span><span class="st">          </span><span class="fl">5.9</span>         <span class="fl">3.0</span>          <span class="fl">5.1</span>         <span class="fl">1.8</span> virginica</a></code></pre></div>
+</body>
+</html>
